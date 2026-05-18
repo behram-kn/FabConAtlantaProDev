@@ -11,10 +11,11 @@ table Sales
 
 	measure 'Sales Amount' = SUMX('Sales', 'Sales'[Quantity] * 'Sales'[Net Price])
 		formatString: $ #,##0
+		displayFolder: Qty
 		lineageTag: a8e95485-02a2-4525-b02a-b2418fbdbe4c
 
 	measure 'Sales Amount (LY)' = IF ([Sales Amount] > 0, CALCULATE([Sales Amount], SAMEPERIODLASTYEAR('Calendar'[Date])))
-		formatString: "€"#,0.###############;("€"#,0.###############);"€"#,0.###############
+		formatString: "$"#,0.###############;("$"#,0.###############);"$"#,0.###############
 		lineageTag: 3fa889ae-64b9-4a6e-b0e6-c81c90fd32bf
 
 	measure 'Sales Amount Avg per Day' = AVERAGEX(VALUES('Calendar'[Date]), [Sales Amount])
@@ -70,6 +71,16 @@ table Sales
 	measure Cost = SUMX ( Sales, Sales[Quantity] * Sales[Unit Cost] )
 		formatString: $ #,##0
 		lineageTag: 3e5cb67e-a411-476f-ad34-7ec10dfd084d
+
+	measure 'Sales Qty (LY)' = IF ([Sales Qty] > 0, CALCULATE([Sales Qty], SAMEPERIODLASTYEAR('Calendar'[Date])))
+		formatString: #,##0
+		displayFolder: Qty
+		lineageTag: 019e3aaf-31da-756d-9029-1d7eb8dad87d
+
+	measure 'Sales Qty Avg per Day' = AVERAGEX(VALUES('Calendar'[Date]), [Sales Qty])
+		formatString: #,##0
+		displayFolder: Qty
+		lineageTag: a1f3b2c8-4e7d-4c9a-b5f2-3d9e1a7c2b6f
 
 	column 'Order Number'
 		dataType: int64
